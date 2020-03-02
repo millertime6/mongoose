@@ -23,7 +23,7 @@ promotionsRouter.route('/:promotionId/comments')
     })
     .catch(err => next(err));
 })
-.post(authenticate.verifyUser,(req, res, next) => {
+.post(authenticate.verifyAdmin,(req, res, next) => {
     Promotion.findById(req.params.promotionId)
     .then(promotion => {
         if (promotion) {
@@ -43,11 +43,11 @@ promotionsRouter.route('/:promotionId/comments')
     })
     .catch(err => next(err));
 })
-.put(authenticate.verifyUser,(req, res) => {
+.put(authenticate.verifyAdmin,(req, res) => {
     res.statusCode = 403;
     res.end(`PUT operation not supported on /promotion/${req.params.promotionId}/comments`);
 })
-.delete(authenticate.verifyUser,(req, res, next) => {
+.delete(authenticate.verifyAdmin,(req, res, next) => {
     Promotion.findById(req.params.promotionId)
     .then(promotion => {
         if (promotion) {
@@ -90,11 +90,11 @@ promotionsRouter.route('/:promotionId/comments/:commentId')
     })
     .catch(err => next(err));
 })
-.post(authenticate.verifyUser,(req, res) => {
+.post(authenticate.verifyAdmin,(req, res) => {
     res.statusCode = 403;
     res.end(`POST operation not supported on /promotion/${req.params.promotionId}/comments/${req.params.commentId}`);
 })
-.put(authenticate.verifyUser,(req, res, next) => {
+.put(authenticate.verifyAdmin,(req, res, next) => {
     Promotion.findById(req.params.promotionId)
     .then(promotion => {
         if (promotion && promotion.comments.id(req.params.commentId)) {
@@ -123,7 +123,7 @@ promotionsRouter.route('/:promotionId/comments/:commentId')
     })
     .catch(err => next(err));
 })
-.delete(authenticate.verifyUser,(req, res, next) => {
+.delete(authenticate.verifyAdmin,(req, res, next) => {
     Promotion.findById(req.params.promotionId)
     .then(promotion => {
         if (promotion && promotion.comments.id(req.params.commentId)) {

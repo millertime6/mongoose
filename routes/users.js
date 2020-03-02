@@ -3,9 +3,10 @@ const User = require('../models/user');
 const passport = require('passport');
 const router = express.Router();
 const authenticate = require('../authenticate');
+const verifyUser = require('../authenticate')
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/users', function(req, res, next) {
     res.send('respond with a resource');
 });
 
