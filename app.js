@@ -6,6 +6,8 @@ var logger = require('morgan');
 const passport = require('passport');
 const authenticate = require('./authenticate');
 const config = require('./config');
+const uploadRouter = require('./routes/uploadRouter');
+
 
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
@@ -59,6 +61,8 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/imageUpload', uploadRouter);
+
 
 function auth(req, res, next) {
   console.log(req.user);
@@ -72,6 +76,16 @@ function auth(req, res, next) {
       return next();
   }
 }
+
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+      console.log(`Redirecting to: https://${req.hostname}:${app.get('secPort')}${req.url}`);
+      res.redirect(301, `https://${req.hostname}:${app.get('secPort')}${req.url}`);
+  }
+});
 
 app.use(auth); 
 
